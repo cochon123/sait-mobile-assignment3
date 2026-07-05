@@ -1,8 +1,61 @@
-# Welcome to your Expo app 👋
+# Form Validation Lab — Expo + React Hook Form + Zod
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Mobile app demonstrating professional form development with schema-based
+validation, built for the **Advanced Form Development and Validation with
+React Hook Form & Zod** assignment (Expo).
 
-## Get started
+## Features
+
+- **Employee Information form** — 5 fields (full name, email, phone, postal
+  code, department) with format validation (email, Canadian postal code,
+  `XXX-XXX-XXXX` phone), required fields, and min/max length checks.
+- **Sign-In form** — email + password with secure-text toggle and on-blur
+  validation.
+- **Sign-Up form** — full name, email, password (with strength meter and
+  upper/lower/number rules), and a confirm-password match check.
+- **Reusable components** — `FormInput`, `FormPicker`, `PrimaryButton`, and
+  `SuccessBanner` with focus styling, error states (border + text + tinted
+  background), and disabled/enabled button feedback.
+- **Stack navigation** with a Home screen that links to each form, plus
+  cross-links between the auth screens.
+
+## Tech stack
+
+- [Expo](https://expo.dev) + React Native (TypeScript)
+- [React Hook Form](https://react-hook-form.com) for form state management
+- [Zod](https://zod.dev) for schema-based validation
+- [`@hookform/resolvers`](https://github.com/react-hook-form/resolvers) to
+  bridge Zod with React Hook Form
+- [Expo Router](https://docs.expo.dev/router/introduction) for file-based
+  Stack navigation
+
+## Project structure
+
+```
+src/
+  app/                    # Expo Router screens (file-based routing)
+    _layout.tsx           # Root Stack navigator + theme provider
+    index.tsx             # Home screen with links to each form
+    employee.tsx          # Employee Information form
+    sign-in.tsx           # Sign-In form
+    sign-up.tsx           # Sign-Up form
+  components/
+    form/                 # Reusable form primitives
+      form-input.tsx
+      form-picker.tsx
+      primary-button.tsx
+      success-banner.tsx
+    themed-text.tsx       # Theme-aware text
+    themed-view.tsx       # Theme-aware view
+  schemas/                # Zod schemas (one per form)
+    employee-schema.ts
+    sign-in-schema.ts
+    sign-up-schema.ts
+  constants/theme.ts      # Colors, spacing, fonts
+  hooks/                  # useTheme, useColorScheme
+```
+
+## Getting started
 
 1. Install dependencies
 
@@ -13,44 +66,17 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 2. Start the app
 
    ```bash
-   npx expo start
+   npm start
    ```
 
-In the output, you'll find options to open the app in a
+3. Open in
+   - [Expo Go](https://expo.dev/go) on your device (scan the QR code), or
+   - an Android emulator (`a` in the terminal), or
+   - the web build (`w` in the terminal).
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Validation UX
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-### Other setup steps
-
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+All forms use `mode: 'onTouched'` so validation runs after the first blur
+and then on every change — giving users quick feedback without nagging on
+the very first keystroke. The submit button stays disabled until the form
+is valid, with a clearly different style in the disabled state.
