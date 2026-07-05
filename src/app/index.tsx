@@ -1,98 +1,117 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { Spacing } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+type FormCard = {
+  title: string;
+  description: string;
+  icon: string;
+  route: '/employee' | '/sign-in' | '/sign-up';
+};
+
+const FORMS: FormCard[] = [
+  {
+    title: 'Employee Information',
+    description:
+      'A five-field onboarding form with email, phone and postal-code format validation plus min/max length checks.',
+    icon: '📋',
+    route: '/employee',
+  },
+  {
+    title: 'Sign In',
+    description: 'Authentication form with email format and password rules, including a visibility toggle.',
+    icon: '🔐',
+    route: '/sign-in',
+  },
+  {
+    title: 'Sign Up',
+    description: 'Account creation with password strength rules and a confirm-password match check.',
+    icon: '✨',
+    route: '/sign-up',
+  },
+];
 
 export default function HomeScreen() {
+  const router = useRouter();
+  const theme = useTheme();
+
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+        <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+          <View style={styles.header}>
+            <Text style={styles.hero}>📝</Text>
+            <ThemedText type="title" style={styles.title}>
+              Form Validation Lab
+            </ThemedText>
+            <ThemedText themeColor="textSecondary" style={styles.subtitle}>
+              React Hook Form + Zod on Expo
+            </ThemedText>
+          </View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
+          <View style={styles.cards}>
+            {FORMS.map((form) => (
+              <Pressable
+                key={form.title}
+                onPress={() => router.push(form.route)}
+                style={({ pressed }) => [
+                  styles.card,
+                  {
+                    backgroundColor: theme.backgroundElement,
+                    borderColor: theme.border,
+                    opacity: pressed ? 0.7 : 1,
+                  },
+                ]}>
+                <Text style={styles.cardIcon}>{form.icon}</Text>
+                <View style={styles.cardBody}>
+                  <ThemedText type="smallBold" style={styles.cardTitle}>
+                    {form.title}
+                  </ThemedText>
+                  <ThemedText type="small" themeColor="textSecondary">
+                    {form.description}
+                  </ThemedText>
+                </View>
+                <Text style={[styles.chevron, { color: theme.textSecondary }]}>›</Text>
+              </Pressable>
+            ))}
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
+  container: { flex: 1 },
+  safeArea: { flex: 1 },
+  content: {
+    paddingHorizontal: Spacing.four,
+    paddingVertical: Spacing.six,
+    gap: Spacing.five,
+    maxWidth: 640,
+    width: '100%',
+    alignSelf: 'center',
+  },
+  header: { alignItems: 'center', gap: Spacing.two, marginTop: Spacing.four },
+  hero: { fontSize: 56 },
+  title: { textAlign: 'center' },
+  subtitle: { textAlign: 'center' },
+  cards: { gap: Spacing.three },
+  card: {
     flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
     alignItems: 'center',
+    padding: Spacing.three,
+    borderRadius: 16,
+    borderWidth: 1,
     gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
+  cardIcon: { fontSize: 32 },
+  cardBody: { flex: 1, gap: 4 },
+  cardTitle: { fontSize: 17 },
+  chevron: { fontSize: 28, fontWeight: '300' },
 });
