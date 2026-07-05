@@ -56,7 +56,7 @@ export default function SignInScreen() {
               render={({ field: { onChange, onBlur, value } }) => (
                 <FormInput
                   label="Email"
-                  icon="✉️"
+                  icon="mail"
                   placeholder="you@example.com"
                   value={value}
                   onChangeText={onChange}
@@ -73,7 +73,7 @@ export default function SignInScreen() {
               render={({ field: { onChange, onBlur, value } }) => (
                 <FormInput
                   label="Password"
-                  icon="🔒"
+                  icon="lock"
                   placeholder="At least 8 characters"
                   value={value}
                   onChangeText={onChange}

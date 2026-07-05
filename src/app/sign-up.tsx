@@ -77,7 +77,7 @@ export default function SignUpScreen() {
               render={({ field: { onChange, onBlur, value } }) => (
                 <FormInput
                   label="Full Name"
-                  icon="👤"
+                  icon="user"
                   placeholder="Jane Doe"
                   value={value}
                   onChangeText={onChange}
@@ -95,7 +95,7 @@ export default function SignUpScreen() {
               render={({ field: { onChange, onBlur, value } }) => (
                 <FormInput
                   label="Email"
-                  icon="✉️"
+                  icon="mail"
                   placeholder="you@example.com"
                   value={value}
                   onChangeText={onChange}
@@ -112,7 +112,7 @@ export default function SignUpScreen() {
               render={({ field: { onChange, onBlur, value } }) => (
                 <FormInput
                   label="Password"
-                  icon="🔒"
+                  icon="lock"
                   placeholder="8+ chars, upper, lower, number"
                   value={value}
                   onChangeText={onChange}
@@ -151,7 +151,7 @@ export default function SignUpScreen() {
               render={({ field: { onChange, onBlur, value } }) => (
                 <FormInput
                   label="Confirm Password"
-                  icon="🔒"
+                  icon="lock"
                   placeholder="Re-enter your password"
                   value={value}
                   onChangeText={onChange}

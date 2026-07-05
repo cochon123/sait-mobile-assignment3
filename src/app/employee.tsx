@@ -64,7 +64,7 @@ export default function EmployeeFormScreen() {
               render={({ field: { onChange, onBlur, value } }) => (
                 <FormInput
                   label="Full Name"
-                  icon="👤"
+                  icon="user"
                   placeholder="Jane Doe"
                   value={value}
                   onChangeText={onChange}
@@ -82,7 +82,7 @@ export default function EmployeeFormScreen() {
               render={({ field: { onChange, onBlur, value } }) => (
                 <FormInput
                   label="Email"
-                  icon="✉️"
+                  icon="mail"
                   placeholder="jane.doe@sait.ca"
                   value={value}
                   onChangeText={onChange}
@@ -99,7 +99,7 @@ export default function EmployeeFormScreen() {
               render={({ field: { onChange, onBlur, value } }) => (
                 <FormInput
                   label="Phone"
-                  icon="📞"
+                  icon="phone"
                   placeholder="403-555-1234"
                   value={value}
                   onChangeText={onChange}
@@ -116,7 +116,7 @@ export default function EmployeeFormScreen() {
               render={({ field: { onChange, onBlur, value } }) => (
                 <FormInput
                   label="Postal Code"
-                  icon="📮"
+                  icon="mailbox"
                   placeholder="T2P 1J9"
                   value={value}
                   onChangeText={onChange}
@@ -133,7 +133,7 @@ export default function EmployeeFormScreen() {
               render={({ field: { onChange, onBlur, value } }) => (
                 <FormPicker
                   label="Department"
-                  icon="🏢"
+                  icon="building"
                   value={value ?? ''}
                   options={DEPARTMENTS}
                   onSelect={onChange}

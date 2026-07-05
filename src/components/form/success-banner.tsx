@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { Icon } from '@/components/icons';
 import { useTheme } from '@/hooks/use-theme';
 
 type SuccessBannerProps = {
@@ -17,7 +18,7 @@ export function SuccessBanner({ message, onDismiss }: SuccessBannerProps) {
           styles.banner,
           { backgroundColor: theme.success + '22', borderColor: theme.success },
         ]}>
-        <Text style={styles.icon}>✅</Text>
+        <Icon name="check" size={20} color={theme.success} />
         <Text style={[styles.message, { color: theme.success }]}>{message}</Text>
       </View>
     </Pressable>
@@ -33,6 +34,5 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     gap: 10,
   },
-  icon: { fontSize: 18 },
   message: { flex: 1, fontSize: 14, fontWeight: '600' },
 });

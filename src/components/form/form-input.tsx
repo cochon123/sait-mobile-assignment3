@@ -8,6 +8,7 @@ import {
   type KeyboardTypeOptions,
 } from 'react-native';
 
+import { Icon, type IconName } from '@/components/icons';
 import { useTheme } from '@/hooks/use-theme';
 
 type FormInputProps = {
@@ -20,15 +21,14 @@ type FormInputProps = {
   keyboardType?: KeyboardTypeOptions;
   secureTextEntry?: boolean;
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
-  /** Optional leading emoji glyph shown inside the input. */
-  icon?: string;
-  /** Optional right adornment glyph (e.g. an eye for password visibility). */
+  /** Leading icon shown inside the input. */
+  icon?: IconName;
   autoCorrect?: boolean;
 };
 
 /**
  * Controlled text input with:
- *  - label + leading icon
+ *  - label + leading SVG icon
  *  - focus border highlight
  *  - error border + helper text + tinted background
  *  - secure-text toggle (eye) for password fields
@@ -56,6 +56,7 @@ export function FormInput({
     : focused
       ? theme.borderFocused
       : theme.border;
+  const adornmentColor = error ? theme.error : theme.textSecondary;
 
   return (
     <View style={styles.container}>
@@ -68,7 +69,11 @@ export function FormInput({
             backgroundColor: error ? theme.errorBackground : theme.inputBackground,
           },
         ]}>
-        {icon ? <Text style={styles.icon}>{icon}</Text> : null}
+        {icon ? (
+          <View style={styles.iconWrap}>
+            <Icon name={icon} size={18} color={adornmentColor} />
+          </View>
+        ) : null}
         <TextInput
           value={value}
           onChangeText={onChangeText}
@@ -90,9 +95,10 @@ export function FormInput({
           <Pressable
             onPress={() => setReveal((r) => !r)}
             hitSlop={8}
+            style={styles.iconWrap}
             accessibilityRole="button"
             accessibilityLabel={reveal ? 'Hide password' : 'Show password'}>
-            <Text style={styles.icon}>{reveal ? '🙈' : '👁️'}</Text>
+            <Icon name={reveal ? 'eye-off' : 'eye'} size={18} color={adornmentColor} />
           </Pressable>
         ) : null}
       </View>
@@ -122,8 +128,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     height: 52,
   },
-  icon: {
-    fontSize: 18,
+  iconWrap: {
+    width: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginRight: 8,
   },
   input: {

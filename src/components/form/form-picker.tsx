@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { Icon, type IconName } from '@/components/icons';
 import { useTheme } from '@/hooks/use-theme';
 
 type FormPickerProps<T extends string> = {
@@ -11,7 +12,7 @@ type FormPickerProps<T extends string> = {
   onBlur?: () => void;
   error?: string;
   placeholder?: string;
-  icon?: string;
+  icon?: IconName;
 };
 
 /**
@@ -45,7 +46,11 @@ export function FormPicker<T extends string>({
             backgroundColor: error ? theme.errorBackground : theme.inputBackground,
           },
         ]}>
-        {icon ? <Text style={styles.icon}>{icon}</Text> : null}
+        {icon ? (
+          <View style={styles.iconWrap}>
+            <Icon name={icon} size={18} color={error ? theme.error : theme.textSecondary} />
+          </View>
+        ) : null}
         <Text
           style={[
             styles.value,
@@ -53,7 +58,9 @@ export function FormPicker<T extends string>({
           ]}>
           {value || placeholder}
         </Text>
-        <Text style={styles.icon}>▾</Text>
+        <View style={styles.chevronWrap}>
+          <Icon name="chevron-down" size={16} color={theme.textSecondary} />
+        </View>
       </Pressable>
       {error ? (
         <Text style={[styles.error, { color: theme.error }]} accessibilityRole="alert">
@@ -115,6 +122,17 @@ const styles = StyleSheet.create({
     height: 52,
   },
   icon: { fontSize: 16, marginRight: 8 },
+  iconWrap: {
+    width: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8,
+  },
+  chevronWrap: {
+    width: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   value: { flex: 1, fontSize: 16 },
   error: { fontSize: 13, marginLeft: 2, fontWeight: '500' },
   backdrop: {
